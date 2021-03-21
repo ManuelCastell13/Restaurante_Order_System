@@ -73,6 +73,172 @@
         </Component>
       </SubComponents>
     </Container>
+    <Container class="javax.swing.JDialog" name="Chilaquiles">
+      <Properties>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[460, 466]"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="rBotonSalsaRoja" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBotonAdobada" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBotonPollo" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBotonPuerco" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBotonRes" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBotonSencillos" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBotonSalsaVerde" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="140" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="201" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="botonAceptarCh" min="-2" pref="74" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBotonSencillos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="rBotonRes" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="rBotonPuerco" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="rBotonPollo" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="rBotonAdobada" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="68" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBotonSalsaVerde" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="rBotonSalsaRoja" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="botonAceptarCh" min="-2" pref="71" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="TIPO DE PROTEINA"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="CHILAQUILES"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rBotonSencillos">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="grupoBotonProteinaCh"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="SENCILLOS"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rBotonRes">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="grupoBotonProteinaCh"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="RES"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rBotonPuerco">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="grupoBotonProteinaCh"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="PUERCO"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rBotonPollo">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="grupoBotonProteinaCh"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="POLLO"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rBotonAdobada">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="grupoBotonProteinaCh"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="ADOBADA"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="SALSAS"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rBotonSalsaVerde">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="grupoBotonSalsasCh"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="VERDE"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rBotonSalsaRoja">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="grupoBotonSalsasCh"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="ROJA"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="botonAceptarCh">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Imagenes/palomita_100x100.png"/>
+            </Property>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonAceptarChActionPerformed"/>
+          </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.ButtonGroup" name="grupoBotonProteinaCh">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="grupoBotonSalsasCh">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -141,14 +307,12 @@
                           <EmptySpace pref="48" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="botonCubetaCerveza" pref="0" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="botonCerveza" max="32767" attributes="0"/>
-                                  <Component id="botonAguaNatural" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="botonAguaLimon" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="botonAguaHorchata" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="botonRefresco" max="32767" attributes="0"/>
-                                  <Component id="botonAguaMineral" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="botonCerveza" max="32767" attributes="0"/>
+                              <Component id="botonAguaNatural" alignment="1" max="32767" attributes="0"/>
+                              <Component id="botonAguaLimon" alignment="1" max="32767" attributes="0"/>
+                              <Component id="botonAguaHorchata" alignment="1" max="32767" attributes="0"/>
+                              <Component id="botonRefresco" max="32767" attributes="0"/>
+                              <Component id="botonAguaMineral" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">

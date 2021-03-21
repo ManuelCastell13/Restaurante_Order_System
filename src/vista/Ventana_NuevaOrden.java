@@ -5,11 +5,19 @@
  */
 package vista;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import modelo.Chilaquiles;
+import modelo.Conexion;
 import modelo.Platillo;
 
 /**
@@ -18,16 +26,17 @@ import modelo.Platillo;
  */
 public class Ventana_NuevaOrden extends javax.swing.JFrame {
 
-    public ArrayList<Platillo> mesa1;
+    public ArrayList<Platillo> ordenes;
     //public ArrayList<Platillo> mesa1 = new ArrayList<Platillo>();
     public int mesa;
+    public int numOrden = 0;
     
     public void crearModeloTabla(){
         tablaOrden.setModel(new DefaultTableModel(
             new Object[][] {
 			},
 		new String[] {
-                    "Codigo", "Nombre", "Cantidad", "Precio"
+                    "Orden", "Nombre", "Tipo", "Precio"
                 }
         )   {
 		Class[] columnTypes = new Class[] {
@@ -38,6 +47,76 @@ public class Ventana_NuevaOrden extends javax.swing.JFrame {
 		}
         }
         );
+    }
+    
+    public void insertarOrdenChilaquiles(Chilaquiles chilaquiles){
+        int idOrdenFinal=1;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        //System.out.println(dtf.format(now));
+        
+        DefaultTableModel modeloTabla = new DefaultTableModel();
+        tablaOrden.setModel(modeloTabla);
+        
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+            try {
+                Conexion con = new Conexion();
+                Connection conexion = con.getConnection();
+                
+                //Codigo para obtener el ultimo IDORDEN (Para poder insertar en la tabla)
+                ps = conexion.prepareStatement("SELECT idOrden, nombre, carne, precio FROM Orden");
+                rs = ps.executeQuery();
+                
+                modeloTabla.addColumn("Orden");
+		modeloTabla.addColumn("Nombre");
+		modeloTabla.addColumn("Tipo"); 
+		modeloTabla.addColumn("Precio"); 
+                
+                //Obtener toda la data de MySQL
+                ResultSetMetaData rsMD = (ResultSetMetaData)rs.getMetaData();
+                int cantidadColumnas = rsMD.getColumnCount();
+                
+                int anchos[] = {50, 100, 100,70};
+                
+                for(int i=0; i<cantidadColumnas; i++) {
+                    tablaOrden.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+		}
+                
+                while(rs.next()){
+                    idOrdenFinal = idOrdenFinal+1;//Codigo para obtener el ultimo IDORDEN (Para poder insertar en la tabla)
+                    
+                    //Agregando cada columna de la base de datos a objeto Fila
+                    Object fila[] = new Object[cantidadColumnas];
+                    for(int i=0; i<cantidadColumnas; i++) {
+                        fila[i] = rs.getObject(i+1);
+                    }
+                    modeloTabla.addRow(fila);
+                }
+                
+                //Codigo para insertar valores de menu chilaquiles
+                ps = conexion.prepareStatement("INSERT INTO Orden (idOrden, numOrden, numMesa, precio, nombre, carne, salsa, estatus, fecha) "
+                        + "values(?,?,?,?,?,?,?,?,?)");
+                
+                ps.setInt(1, idOrdenFinal);
+                ps.setInt(2, numOrden);
+                ps.setInt(3, mesa);
+                ps.setDouble(4, chilaquiles.getPrecio());
+                ps.setString(5, chilaquiles.getNombre());
+                ps.setString(6, chilaquiles.getProteina());
+                ps.setString(7, chilaquiles.getSalsa());
+                ps.setString(8, "Activo");
+                ps.setString(9, dtf.format(now));
+                
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Registro insertado correctamente");
+                    
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+            
+        System.out.println("ID =" + idOrdenFinal);
     }
 
     /**
@@ -65,6 +144,20 @@ public class Ventana_NuevaOrden extends javax.swing.JFrame {
         cajaNumMesa = new javax.swing.JTextField();
         cajaCantPersonas = new javax.swing.JTextField();
         botonAceptar = new javax.swing.JButton();
+        Chilaquiles = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        rBotonSencillos = new javax.swing.JRadioButton();
+        rBotonRes = new javax.swing.JRadioButton();
+        rBotonPuerco = new javax.swing.JRadioButton();
+        rBotonPollo = new javax.swing.JRadioButton();
+        rBotonAdobada = new javax.swing.JRadioButton();
+        jLabel3 = new javax.swing.JLabel();
+        rBotonSalsaVerde = new javax.swing.JRadioButton();
+        rBotonSalsaRoja = new javax.swing.JRadioButton();
+        botonAceptarCh = new javax.swing.JButton();
+        grupoBotonProteinaCh = new javax.swing.ButtonGroup();
+        grupoBotonSalsasCh = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         botonNuevaMesa = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -133,6 +226,100 @@ public class Ventana_NuevaOrden extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(botonAceptar)
                 .addContainerGap(38, Short.MAX_VALUE))
+        );
+
+        Chilaquiles.setMinimumSize(new java.awt.Dimension(460, 466));
+
+        jLabel1.setText("TIPO DE PROTEINA");
+
+        jLabel2.setText("CHILAQUILES");
+
+        grupoBotonProteinaCh.add(rBotonSencillos);
+        rBotonSencillos.setText("SENCILLOS");
+
+        grupoBotonProteinaCh.add(rBotonRes);
+        rBotonRes.setText("RES");
+
+        grupoBotonProteinaCh.add(rBotonPuerco);
+        rBotonPuerco.setText("PUERCO");
+
+        grupoBotonProteinaCh.add(rBotonPollo);
+        rBotonPollo.setText("POLLO");
+
+        grupoBotonProteinaCh.add(rBotonAdobada);
+        rBotonAdobada.setText("ADOBADA");
+
+        jLabel3.setText("SALSAS");
+
+        grupoBotonSalsasCh.add(rBotonSalsaVerde);
+        rBotonSalsaVerde.setText("VERDE");
+
+        grupoBotonSalsasCh.add(rBotonSalsaRoja);
+        rBotonSalsaRoja.setText("ROJA");
+
+        botonAceptarCh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/palomita_100x100.png"))); // NOI18N
+        botonAceptarCh.setBorder(null);
+        botonAceptarCh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAceptarChActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ChilaquilesLayout = new javax.swing.GroupLayout(Chilaquiles.getContentPane());
+        Chilaquiles.getContentPane().setLayout(ChilaquilesLayout);
+        ChilaquilesLayout.setHorizontalGroup(
+            ChilaquilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ChilaquilesLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(ChilaquilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(ChilaquilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rBotonSalsaRoja)
+                    .addComponent(rBotonAdobada)
+                    .addComponent(rBotonPollo)
+                    .addComponent(rBotonPuerco)
+                    .addComponent(rBotonRes)
+                    .addComponent(rBotonSencillos)
+                    .addComponent(rBotonSalsaVerde))
+                .addContainerGap(140, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ChilaquilesLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(ChilaquilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ChilaquilesLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(201, 201, 201))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ChilaquilesLayout.createSequentialGroup()
+                        .addComponent(botonAceptarCh, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31))))
+        );
+        ChilaquilesLayout.setVerticalGroup(
+            ChilaquilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ChilaquilesLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addGroup(ChilaquilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(rBotonSencillos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rBotonRes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rBotonPuerco)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rBotonPollo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rBotonAdobada)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addGroup(ChilaquilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(rBotonSalsaVerde))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rBotonSalsaRoja)
+                .addGap(18, 18, 18)
+                .addComponent(botonAceptarCh, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -230,13 +417,12 @@ public class Ventana_NuevaOrden extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(botonCubetaCerveza, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(botonCerveza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botonAguaNatural, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botonAguaLimon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botonAguaHorchata, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botonRefresco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botonAguaMineral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(botonCerveza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonAguaNatural, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonAguaLimon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonAguaHorchata, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonRefresco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonAguaMineral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(27, 27, 27)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(botonCafeAmericano, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -317,7 +503,7 @@ public class Ventana_NuevaOrden extends javax.swing.JFrame {
 
     private void botonNuevaMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevaMesaActionPerformed
         MesaDialog.setVisible(true);
-
+        numOrden++;
     }//GEN-LAST:event_botonNuevaMesaActionPerformed
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
@@ -326,12 +512,30 @@ public class Ventana_NuevaOrden extends javax.swing.JFrame {
     }//GEN-LAST:event_botonAceptarActionPerformed
 
     private void botonChilaquilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonChilaquilesActionPerformed
-
+        Chilaquiles.setVisible(true);
     }//GEN-LAST:event_botonChilaquilesActionPerformed
 
     private void botonAguaHorchataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAguaHorchataActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botonAguaHorchataActionPerformed
+
+    private void botonAceptarChActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarChActionPerformed
+        String nombre = "chilaquiles";
+        String proteina = null;
+        String salsa = null;
+        double precio = 0;
+        if(rBotonSencillos.isSelected()){
+            proteina = "sencillos";
+            precio = 60;
+        }
+        if(rBotonSalsaVerde.isSelected()){
+            salsa = "salsa verde";
+        }
+        Chilaquiles chilaquiles = new Chilaquiles(proteina, salsa, nombre, precio, mesa);
+        insertarOrdenChilaquiles(chilaquiles);
+        
+        Chilaquiles.dispose();
+    }//GEN-LAST:event_botonAceptarChActionPerformed
 
     /**
      * @param args the command line arguments
@@ -369,8 +573,10 @@ public class Ventana_NuevaOrden extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog Chilaquiles;
     private javax.swing.JDialog MesaDialog;
     private javax.swing.JButton botonAceptar;
+    private javax.swing.JButton botonAceptarCh;
     private javax.swing.JButton botonAguaHorchata;
     private javax.swing.JButton botonAguaLimon;
     private javax.swing.JButton botonAguaMineral;
@@ -396,8 +602,20 @@ public class Ventana_NuevaOrden extends javax.swing.JFrame {
     private javax.swing.JTextField cajaNumMesa;
     private javax.swing.JLabel etiquetaNumMesa;
     private javax.swing.JLabel etiquetaNumMesa1;
+    private javax.swing.ButtonGroup grupoBotonProteinaCh;
+    private javax.swing.ButtonGroup grupoBotonSalsasCh;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rBotonAdobada;
+    private javax.swing.JRadioButton rBotonPollo;
+    private javax.swing.JRadioButton rBotonPuerco;
+    private javax.swing.JRadioButton rBotonRes;
+    private javax.swing.JRadioButton rBotonSalsaRoja;
+    private javax.swing.JRadioButton rBotonSalsaVerde;
+    private javax.swing.JRadioButton rBotonSencillos;
     private javax.swing.JTable tablaOrden;
     // End of variables declaration//GEN-END:variables
 }

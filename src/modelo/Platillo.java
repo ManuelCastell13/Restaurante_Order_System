@@ -14,6 +14,13 @@ public class Platillo {
     private double precio;
     private int numMesa;
 
+    public Platillo(String nombre, double precio, int numMesa) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.numMesa = numMesa;
+    }
+    
+    
     public int getNumMesa() {
         return numMesa;
     }
