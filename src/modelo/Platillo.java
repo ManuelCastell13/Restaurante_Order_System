@@ -10,31 +10,67 @@ package modelo;
  * @author caste
  */
 public class Platillo {
-    private String nombre;
+    private String platillo;
+    private String complementos;
+    private String extras;
     private double precio;
     private int numMesa;
+    private int cantidad;
 
-    public Platillo(String nombre, double precio, int numMesa) {
-        this.nombre = nombre;
+    public Platillo(String platillo, int cantidad, double precio, int numMesa) {
+        this.platillo = platillo;
         this.precio = precio;
         this.numMesa = numMesa;
+        this.cantidad = cantidad;
     }
     
-    
-    public int getNumMesa() {
-        return numMesa;
-    }
-
-    public void setNumMesa(int numMesa) {
+    public Platillo(String platillo, int cantidad, String complementos, double precio, int numMesa) {
+        this.platillo = platillo;
+        this.complementos = complementos;
+        this.precio = precio;
         this.numMesa = numMesa;
+        this.cantidad = cantidad;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Platillo(String platillo, int cantidad, String complementos, String extras, double precio, int numMesa) {
+        this.platillo = platillo;
+        this.complementos = complementos;
+        this.extras = extras;
+        this.precio = precio;
+        this.numMesa = numMesa;
+        this.cantidad = cantidad;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public String getPlatillo() {
+        return platillo;
+    }
+
+    public void setPlatillo(String platillo) {
+        this.platillo = platillo;
+    }
+
+    public String getComplementos() {
+        return complementos;
+    }
+
+    public void setComplementos(String complementos) {
+        this.complementos = complementos;
+    }
+
+    public String getExtras() {
+        return extras;
+    }
+
+    public void setExtras(String extras) {
+        this.extras = extras;
     }
 
     public double getPrecio() {
@@ -43,6 +79,14 @@ public class Platillo {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public int getNumMesa() {
+        return numMesa;
+    }
+
+    public void setNumMesa(int numMesa) {
+        this.numMesa = numMesa;
     }
     
     
